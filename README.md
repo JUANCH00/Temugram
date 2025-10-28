@@ -1,70 +1,145 @@
-# Getting Started with Create React App
+# Consistencia Causal - Demo Interactiva
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Una aplicación interactiva en React que demuestra el concepto de **consistencia causal** en sistemas distribuidos mediante un sistema de comentarios distribuido en múltiples servidores.
 
-## Available Scripts
+![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat&logo=react)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-In the project directory, you can run:
+##  Descripción
 
-### `npm start`
+Este proyecto simula un sistema distribuido de comentarios con tres servidores independientes que mantienen consistencia causal. Demuestra cómo los eventos (comentarios y respuestas) se propagan entre servidores respetando las relaciones de causalidad, asegurando que las respuestas nunca aparezcan antes que sus comentarios padre.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Características Principales
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-  **Tres servidores distribuidos** que simulan réplicas independientes
+-  **Latencias de red variables** entre servidores
+-  **Preservación de causalidad** usando vector clocks
+-  **Sistema de comentarios con respuestas anidadas**
+-  **Sincronización automática** entre servidores
+-  **Cola de eventos pendientes** para eventos que esperan sus dependencias
+-  **Visualización en tiempo real** del estado de cada servidor
 
-### `npm test`
+##  Conceptos Demostrados
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Consistencia Causal
 
-### `npm run build`
+La consistencia causal garantiza que:
+- Si un evento A causa un evento B, entonces todos los servidores verán A antes que B
+- Las respuestas siempre aparecen después de sus comentarios padre
+- Los eventos sin relación causal pueden aparecer en diferente orden en distintos servidores
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Vector Clocks
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Cada evento mantiene un vector clock que rastrea el estado lógico del sistema, permitiendo determinar relaciones de causalidad entre eventos distribuidos.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Instalación
 
-### `npm run eject`
+### Prerrequisitos
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Node.js (versión 14 o superior)
+- npm o yarn
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Pasos de instalación
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+# Clonar el repositorio
+git clone https://github.com/tu-usuario/causal-consistency-demo.git
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Entrar al directorio
+cd causal-consistency-demo
 
-## Learn More
+# Instalar dependencias
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Iniciar la aplicación
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+La aplicación estará disponible en `http://localhost:3000`
 
-### Code Splitting
+## Uso
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. **Seleccionar un servidor**: Haz clic en uno de los tres botones de servidor (Server-A, Server-B, Server-C)
 
-### Analyzing the Bundle Size
+2. **Crear un comentario**: Escribe un mensaje en el campo de texto y presiona "Publicar"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3. **Responder a un comentario**: Haz clic en el botón de respuesta junto a cualquier comentario y escribe tu respuesta
 
-### Making a Progressive Web App
+4. **Observar la sincronización**: Cambia entre servidores para ver cómo los eventos se propagan con diferentes latencias
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+5. **Eventos pendientes**: Observa cómo las respuestas esperan en cola si su comentario padre aún no ha llegado
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Componentes Clave
 
-### Deployment
+#### `CausalServer`
+Clase que simula un servidor individual con:
+- Gestión de eventos locales
+- Vector clock para tracking de causalidad
+- Cola de eventos pendientes
+- Lógica de inserción ordenada
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### `CausalConsistencyDemo`
+Componente React principal que maneja:
+- Estado de los tres servidores
+- Interfaz de usuario
+- Sincronización entre servidores
+- Renderizado de eventos
 
-### `npm run build` fails to minify
+## 🔧 Configuración
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Latencias de Red
+
+Las latencias entre servidores se configuran en el método `syncServers`:
+
+```javascript
+const serverLatencies = [
+  3000 + Math.random() * 2000,  // 3-5 segundos
+  5000 + Math.random() * 3000,  // 5-8 segundos
+  7000 + Math.random() * 3000   // 7-10 segundos
+];
+```
+
+Las respuestas tienen un multiplicador de latencia de 0.6x para simular prioridad.
+
+## 🎨 Personalización
+
+### Estilos
+
+Los estilos están centralizados en `src/styles.css` y utilizan:
+- Variables CSS para colores consistentes
+- Diseño responsive con media queries
+- Gradientes y sombras modernas
+
+### Colores Principales
+
+- Azul primario: `#2563eb`
+- Fondo: Gradiente azul claro
+- Texto: `#1f2937`
+
+## 📚 Aprendizaje
+
+Este proyecto es ideal para entender:
+- Sistemas distribuidos
+- Modelos de consistencia
+- Relojes vectoriales
+- Propagación de eventos
+- Ordenamiento causal
+- React y gestión de estado
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Haz fork del proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+---
+
+⭐️ Si este proyecto te fue útil, considera darle una estrella en GitHu

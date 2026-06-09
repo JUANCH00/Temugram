@@ -1,145 +1,141 @@
-# Consistencia Causal - Demo Interactiva
+# Causal Consistency — Interactive Demo
 
-Una aplicación interactiva en React que demuestra el concepto de **consistencia causal** en sistemas distribuidos mediante un sistema de comentarios distribuido en múltiples servidores.
+An interactive React application that demonstrates **causal consistency** in distributed systems through a comment system replicated across multiple servers.
 
 ![React](https://img.shields.io/badge/React-18.x-61DAFB?style=flat&logo=react)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-##  Descripción
+## Description
 
-Este proyecto simula un sistema distribuido de comentarios con tres servidores independientes que mantienen consistencia causal. Demuestra cómo los eventos (comentarios y respuestas) se propagan entre servidores respetando las relaciones de causalidad, asegurando que las respuestas nunca aparezcan antes que sus comentarios padre.
+This project simulates a distributed comment system with three independent servers that maintain causal consistency. It demonstrates how events (comments and replies) propagate across servers while respecting causality relationships — ensuring that replies never appear before their parent comments.
 
-### Características Principales
+### Key Features
 
--  **Tres servidores distribuidos** que simulan réplicas independientes
--  **Latencias de red variables** entre servidores
--  **Preservación de causalidad** usando vector clocks
--  **Sistema de comentarios con respuestas anidadas**
--  **Sincronización automática** entre servidores
--  **Cola de eventos pendientes** para eventos que esperan sus dependencias
--  **Visualización en tiempo real** del estado de cada servidor
+- **Three distributed servers** simulating independent replicas
+- **Variable network latencies** between servers
+- **Causality preservation** using vector clocks
+- **Nested comment and reply system**
+- **Automatic synchronization** across servers
+- **Pending event queue** for events awaiting their dependencies
+- **Real-time visualization** of each server's state
 
-##  Conceptos Demostrados
+## Concepts Demonstrated
 
-### Consistencia Causal
+### Causal Consistency
 
-La consistencia causal garantiza que:
-- Si un evento A causa un evento B, entonces todos los servidores verán A antes que B
-- Las respuestas siempre aparecen después de sus comentarios padre
-- Los eventos sin relación causal pueden aparecer en diferente orden en distintos servidores
+Causal consistency guarantees that:
+- If event A causes event B, all servers will see A before B
+- Replies always appear after their parent comments
+- Causally unrelated events may appear in different orders on different servers
 
 ### Vector Clocks
 
-Cada evento mantiene un vector clock que rastrea el estado lógico del sistema, permitiendo determinar relaciones de causalidad entre eventos distribuidos.
+Each event carries a vector clock that tracks the logical state of the system, enabling causal relationship detection between distributed events.
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Prerrequisitos
+### Prerequisites
 
-- Node.js (versión 14 o superior)
-- npm o yarn
+- Node.js (version 14 or higher)
+- npm or yarn
 
-### Pasos de instalación
+### Setup
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/causal-consistency-demo.git
+# Clone the repository
+git clone https://github.com/your-username/causal-consistency-demo.git
 
-# Entrar al directorio
+# Enter the project directory
 cd causal-consistency-demo
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Iniciar la aplicación
+# Start the application
 npm start
 ```
 
-La aplicación estará disponible en `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
-## Uso
+## Usage
 
-1. **Seleccionar un servidor**: Haz clic en uno de los tres botones de servidor (Server-A, Server-B, Server-C)
+1. **Select a server** — click one of the three server buttons (Server-A, Server-B, Server-C)
+2. **Create a comment** — type a message in the text field and click "Publish"
+3. **Reply to a comment** — click the reply button next to any comment and write your response
+4. **Observe synchronization** — switch between servers to see how events propagate with different latencies
+5. **Pending events** — watch how replies queue up if their parent comment has not yet arrived
 
-2. **Crear un comentario**: Escribe un mensaje en el campo de texto y presiona "Publicar"
-
-3. **Responder a un comentario**: Haz clic en el botón de respuesta junto a cualquier comentario y escribe tu respuesta
-
-4. **Observar la sincronización**: Cambia entre servidores para ver cómo los eventos se propagan con diferentes latencias
-
-5. **Eventos pendientes**: Observa cómo las respuestas esperan en cola si su comentario padre aún no ha llegado
-
-
-### Componentes Clave
+## Key Components
 
 #### `CausalServer`
-Clase que simula un servidor individual con:
-- Gestión de eventos locales
-- Vector clock para tracking de causalidad
-- Cola de eventos pendientes
-- Lógica de inserción ordenada
+Class that simulates an individual server with:
+- Local event management
+- Vector clock for causality tracking
+- Pending event queue
+- Ordered insertion logic
 
 #### `CausalConsistencyDemo`
-Componente React principal que maneja:
-- Estado de los tres servidores
-- Interfaz de usuario
-- Sincronización entre servidores
-- Renderizado de eventos
+Main React component that handles:
+- State for all three servers
+- User interface
+- Cross-server synchronization
+- Event rendering
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Latencias de Red
+### Network Latencies
 
-Las latencias entre servidores se configuran en el método `syncServers`:
+Latencies between servers are configured in the `syncServers` method:
 
 ```javascript
 const serverLatencies = [
-  3000 + Math.random() * 2000,  // 3-5 segundos
-  5000 + Math.random() * 3000,  // 5-8 segundos
-  7000 + Math.random() * 3000   // 7-10 segundos
+  3000 + Math.random() * 2000,  // 3–5 seconds
+  5000 + Math.random() * 3000,  // 5–8 seconds
+  7000 + Math.random() * 3000   // 7–10 seconds
 ];
 ```
 
-Las respuestas tienen un multiplicador de latencia de 0.6x para simular prioridad.
+Replies use a 0.6× latency multiplier to simulate delivery priority.
 
-## 🎨 Personalización
+## 🎨 Customization
 
-### Estilos
+### Styles
 
-Los estilos están centralizados en `src/styles.css` y utilizan:
-- Variables CSS para colores consistentes
-- Diseño responsive con media queries
-- Gradientes y sombras modernas
+Styles are centralized in `src/styles.css` using:
+- CSS variables for consistent colors
+- Responsive design with media queries
+- Modern gradients and shadows
 
-### Colores Principales
+### Primary Colors
 
-- Azul primario: `#2563eb`
-- Fondo: Gradiente azul claro
-- Texto: `#1f2937`
+- Primary blue: `#2563eb`
+- Background: light blue gradient
+- Text: `#1f2937`
 
-## 📚 Aprendizaje
+## 📚 Learning
 
-Este proyecto es ideal para entender:
-- Sistemas distribuidos
-- Modelos de consistencia
-- Relojes vectoriales
-- Propagación de eventos
-- Ordenamiento causal
-- React y gestión de estado
+This project is ideal for understanding:
+- Distributed systems
+- Consistency models
+- Vector clocks
+- Event propagation
+- Causal ordering
+- React and state management
 
-## 🤝 Contribuciones
+## 🤝 Contributing
 
-Las contribuciones son bienvenidas. Por favor:
+Contributions are welcome. Please:
 
-1. Haz fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📝 Licencia
+## 📝 License
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
 ---
 
-⭐️ Si este proyecto te fue útil, considera darle una estrella en GitHu
+⭐️ If this project was useful to you, consider giving it a star on GitHub!
